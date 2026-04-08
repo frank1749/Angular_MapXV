@@ -16,6 +16,20 @@
     }
   </div>
 
+  <div class="filter-panel">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Country</mat-label>
+      <mat-select
+        [value]="facade.filterCountry()"
+        (selectionChange)="facade.setCountryFilter($event.value)">
+        <mat-option [value]="null">All countries</mat-option>
+        @for (country of facade.availableCountries(); track country) {
+          <mat-option [value]="country">{{ country }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   @if (facade.selectedAircraft(); as aircraft) {
     <div class="aircraft-panel">
       <strong>{{ aircraft.callsign }}</strong>

@@ -25,6 +25,8 @@ export class AircraftFacade {
   readonly error = this.store.error;
   readonly selectedAircraft = this.store.selectedAircraft;
   readonly selectedIcao24 = this.store.selectedIcao24;
+  readonly filterCountry = this.store.filterCountry;
+  readonly availableCountries = this.store.availableCountries;
 
   startPolling(): void {
     this.store.setLoading(true);
@@ -60,5 +62,13 @@ export class AircraftFacade {
 
   selectAircraft(icao24: string | null): void {
     this.store.selectAircraft(icao24);
+  }
+
+  setCountryFilter(country: string | null): void {
+    this.store.setCountryFilter(country);
+  }
+
+  clearFilter(): void {
+    this.store.clearFilter();
   }
 }

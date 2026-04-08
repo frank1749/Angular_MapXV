@@ -8,6 +8,8 @@ import {
   DestroyRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MapContainerComponent } from './map-container/map-container.component';
 import { AircraftFacade } from '../../application/aircraft/aircraft.facade';
 import { MapService } from '../../shared/map/map.service';
@@ -15,7 +17,7 @@ import { MapService } from '../../shared/map/map.service';
 @Component({
   selector: 'app-map-view',
   standalone: true,
-  imports: [MapContainerComponent],
+  imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule],
   templateUrl: './map-view.component.html',
   styleUrl: './map-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
