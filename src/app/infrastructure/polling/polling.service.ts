@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, timer, Subject, EMPTY, share, retry, tap } from 'rxjs';
+import { Observable, switchMap, timer, Subject, share, retry, takeUntil } from 'rxjs';
 
 export interface PollingConfig {
   readonly intervalMs: number;
@@ -16,12 +16,12 @@ const DEFAULT_CONFIG: PollingConfig = {
 @Injectable({ providedIn: 'root' })
 export class PollingService {
   private readonly stop$ = new Subject<void>();
-  private activePolling: Observable<unknown> | null = null;
 
   /**
    * Creates a polling stream that emits at a regular interval.
    * Uses switchMap to cancel in-flight requests when a new tick fires.
    * Includes retry with configurable delay for transient failures.
+   * Completes when stopPolling() is called.
    */
   poll<T>(
     source: () => Observable<T>,
@@ -29,7 +29,8 @@ export class PollingService {
   ): Observable<T> {
     const { intervalMs, retryAttempts, retryDelayMs } = { ...DEFAULT_CONFIG, ...config };
 
-    const polling$ = timer(0, intervalMs).pipe(
+    return timer(0, intervalMs).pipe(
+      takeUntil(this.stop$),
       switchMap(() => source()),
       retry({
         count: retryAttempts,
@@ -38,13 +39,9 @@ export class PollingService {
       }),
       share(),
     );
-
-    this.activePolling = polling$;
-    return polling$;
   }
 
   stopPolling(): void {
     this.stop$.next();
-    this.activePolling = null;
   }
 }

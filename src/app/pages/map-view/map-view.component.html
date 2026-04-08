@@ -1,0 +1,34 @@
+<div class="map-view">
+  <app-map-container />
+
+  @if (facade.loading()) {
+    <div class="status-overlay loading">Loading aircraft data...</div>
+  }
+
+  @if (facade.error(); as error) {
+    <div class="status-overlay error">{{ error }}</div>
+  }
+
+  <div class="info-panel">
+    <span>Aircraft: {{ facade.aircraftCount() }}</span>
+    @if (facade.lastUpdated(); as ts) {
+      <span>Updated: {{ formatTimestamp(ts) }}</span>
+    }
+  </div>
+
+  @if (facade.selectedAircraft(); as aircraft) {
+    <div class="aircraft-panel">
+      <strong>{{ aircraft.callsign }}</strong>
+      <span>ICAO: {{ aircraft.icao24 }}</span>
+      <span>Country: {{ aircraft.originCountry }}</span>
+      <span>Alt: {{ aircraft.geoAltitude }}m</span>
+      <span>Speed: {{ aircraft.velocity }}m/s</span>
+      <span>Track: {{ aircraft.trueTrack }}°</span>
+    </div>
+  } @else if (facade.selectedIcao24()) {
+    <div class="aircraft-panel stale">
+      <strong>{{ facade.selectedIcao24() }}</strong>
+      <span>Aircraft no longer tracked</span>
+    </div>
+  }
+</div>

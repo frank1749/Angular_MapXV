@@ -23,6 +23,8 @@ export class AircraftFacade {
   readonly lastUpdated = this.store.lastUpdated;
   readonly loading = this.store.loading;
   readonly error = this.store.error;
+  readonly selectedAircraft = this.store.selectedAircraft;
+  readonly selectedIcao24 = this.store.selectedIcao24;
 
   startPolling(): void {
     this.store.setLoading(true);
@@ -54,5 +56,9 @@ export class AircraftFacade {
 
   stopPolling(): void {
     this.polling.stopPolling();
+  }
+
+  selectAircraft(icao24: string | null): void {
+    this.store.selectAircraft(icao24);
   }
 }

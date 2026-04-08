@@ -30,7 +30,10 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "maplibre-gl"
+            ]
           },
           "configurations": {
             "production": {

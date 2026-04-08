@@ -1,0 +1,72 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.map-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.status-overlay {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.loading {
+  background: rgba(33, 150, 243, 0.9);
+  color: white;
+}
+
+.error {
+  background: rgba(244, 67, 54, 0.9);
+  color: white;
+}
+
+.info-panel {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: 16px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  font-size: 13px;
+  z-index: 10;
+}
+
+.aircraft-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  font-size: 13px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+}
+
+.aircraft-panel strong {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.aircraft-panel.stale {
+  opacity: 0.7;
+  border-left: 3px solid #ff9800;
+}

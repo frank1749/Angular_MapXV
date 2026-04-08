@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, NgZone } from '@angular/core';
 import { Map as MaplibreMap, GeoJSONSource, NavigationControl } from 'maplibre-gl';
 import { FeatureCollection, Point } from 'geojson';
+import { Subject, Observable } from 'rxjs';
 import { MAP_CONFIG } from './map.tokens';
 
 const AIRCRAFT_SOURCE_ID = 'aircraft-source';
@@ -19,9 +20,16 @@ export class MapService {
   private map: MaplibreMap | null = null;
   private sourceReady = false;
 
+  private readonly _aircraftClick$ = new Subject<string>();
+
   readonly isReady = signal(false);
+  readonly aircraftClick$: Observable<string> = this._aircraftClick$.asObservable();
 
   initialize(container: HTMLElement): void {
+    if (this.map) {
+      this.destroy();
+    }
+
     this.ngZone.runOutsideAngular(() => {
       this.map = new MaplibreMap({
         container,
@@ -34,6 +42,7 @@ export class MapService {
 
       this.map.on('load', () => {
         this.setupAircraftLayer();
+        this.setupClickHandlers();
         this.ngZone.run(() => this.isReady.set(true));
       });
     });
@@ -44,8 +53,21 @@ export class MapService {
 
     const source = this.map.getSource(AIRCRAFT_SOURCE_ID) as GeoJSONSource | undefined;
     if (source) {
-      source.setData(geojson);
+      this.ngZone.runOutsideAngular(() => source.setData(geojson));
     }
+  }
+
+  flyTo(longitude: number, latitude: number): void {
+    if (!this.map) return;
+
+    this.ngZone.runOutsideAngular(() => {
+      this.map!.flyTo({
+        center: [longitude, latitude],
+        zoom: Math.max(this.map!.getZoom(), 7),
+        speed: 1.5,
+        curve: 1.2,
+      });
+    });
   }
 
   destroy(): void {
@@ -89,5 +111,25 @@ export class MapService {
     });
 
     this.sourceReady = true;
+  }
+
+  private setupClickHandlers(): void {
+    if (!this.map) return;
+
+    this.map.on('click', AIRCRAFT_LAYER_ID, (e) => {
+      const feature = e.features?.[0];
+      const icao24 = feature?.properties?.['icao24'] as string | undefined;
+      if (icao24) {
+        this.ngZone.run(() => this._aircraftClick$.next(icao24));
+      }
+    });
+
+    this.map.on('mouseenter', AIRCRAFT_LAYER_ID, () => {
+      if (this.map) this.map.getCanvas().style.cursor = 'pointer';
+    });
+
+    this.map.on('mouseleave', AIRCRAFT_LAYER_ID, () => {
+      if (this.map) this.map.getCanvas().style.cursor = '';
+    });
   }
 }
