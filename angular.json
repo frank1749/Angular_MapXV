@@ -63,7 +63,8 @@
               "buildTarget": "angular18-signals-app:build:production"
             },
             "development": {
-              "buildTarget": "angular18-signals-app:build:development"
+              "buildTarget": "angular18-signals-app:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
