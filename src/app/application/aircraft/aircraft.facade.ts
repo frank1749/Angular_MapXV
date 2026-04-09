@@ -6,7 +6,8 @@ import { AircraftStore } from '../../state/aircraft/aircraft.store';
 import { PollingService } from '../../infrastructure/polling/polling.service';
 import { VisibilityService } from '../../infrastructure/visibility/visibility.service';
 
-const POLLING_INTERVAL_MS = 10_000;
+// 90 s global: 960 req/day × 4 credits = 3,840 — within 4,000/day standard limit.
+const POLLING_INTERVAL_MS = 90_000;
 
 @Injectable({ providedIn: 'root' })
 export class AircraftFacade {
