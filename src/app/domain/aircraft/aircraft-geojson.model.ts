@@ -1,5 +1,4 @@
 import { Feature, FeatureCollection, Point } from 'geojson';
-import { AircraftState } from './aircraft.model';
 
 export interface AircraftFeatureProperties {
   readonly icao24: string;

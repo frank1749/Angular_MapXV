@@ -1,8 +1,8 @@
-import { Injectable, NgZone, inject, OnDestroy } from '@angular/core';
-import { Observable, fromEvent, map, startWith, distinctUntilChanged, shareReplay } from 'rxjs';
+import { Injectable, NgZone, inject } from '@angular/core';
+import { Observable, distinctUntilChanged, shareReplay } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class VisibilityService implements OnDestroy {
+export class VisibilityService {
   private readonly ngZone = inject(NgZone);
 
   /**
@@ -29,7 +29,4 @@ export class VisibilityService implements OnDestroy {
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
-  ngOnDestroy(): void {
-    // shareReplay with refCount handles cleanup
-  }
 }

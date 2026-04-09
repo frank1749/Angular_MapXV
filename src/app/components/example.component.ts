@@ -1,7 +1,7 @@
 // Example component using Signals
 // Copy and modify this as a template for your components
 
-import { Component, signal, computed, effect, inject } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';

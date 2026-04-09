@@ -1,6 +1,6 @@
 import { Injectable, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { tap, switchMap, filter, EMPTY } from 'rxjs';
+import { tap, switchMap, EMPTY } from 'rxjs';
 import { AircraftRepository } from '../../data/aircraft/aircraft.repository';
 import { AircraftStore } from '../../state/aircraft/aircraft.store';
 import { PollingService } from '../../infrastructure/polling/polling.service';
@@ -46,7 +46,7 @@ export class AircraftFacade {
             this.store.setAircraft(aircraft);
             this.store.setLoading(false);
           },
-          error: (err) => {
+          error: () => {
             this.store.setError('Failed to fetch aircraft data');
             this.store.setLoading(false);
           },

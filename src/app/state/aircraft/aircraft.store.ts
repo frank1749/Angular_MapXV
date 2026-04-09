@@ -3,20 +3,6 @@ import { AircraftState } from '../../domain/aircraft/aircraft.model';
 import { AircraftFeatureCollection } from '../../domain/aircraft/aircraft-geojson.model';
 import { aircraftMapToGeoJson } from '../../data/aircraft/aircraft-geojson.mapper';
 
-export interface AircraftStoreState {
-  readonly aircraftMap: Record<string, AircraftState>;
-  readonly lastUpdated: number | null;
-  readonly loading: boolean;
-  readonly error: string | null;
-}
-
-const INITIAL_STATE: AircraftStoreState = {
-  aircraftMap: {},
-  lastUpdated: null,
-  loading: false,
-  error: null,
-};
-
 @Injectable({ providedIn: 'root' })
 export class AircraftStore {
   // --- Private writable state ---
