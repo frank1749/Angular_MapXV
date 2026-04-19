@@ -203,10 +203,10 @@ OpenSky API → Proxy (Bearer token) → Repository → Adapter → Store (signa
 
 ---
 
-## � Key Technical Decisions
+## 💡 Key Technical Decisions
 
-- **Signals over RxJS in UI layer**  
-  Avoids manual subscriptions and reduces memory leaks.
+- **Signals over RxJS in UI layer (Strict Separation of Concerns)**  
+  Avoids manual subscriptions and reduces memory leaks. **Angular Signals** completely cover the application state and derived selectors (`_aircraftMap`, `aircraftGeoJson`, filters, and selections) as required. **RxJS** is intentionally preserved *only* as an interoperability layer for handling inherently stream-based asynchronous events (like `HttpClient`, `timer` for polling, and the Page Visibility API). This clear boundary ensures RxJS does not leak into UI state, while still leveraging its power for complex orchestrations like `switchMap` request cancellation.
 
 - **Normalized state (`Record<icao24, AircraftState>`)**  
   Enables O(1) lookups and efficient updates.
