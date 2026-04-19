@@ -10,6 +10,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MapContainerComponent } from './map-container/map-container.component';
 import { AircraftFacade } from '../../application/aircraft/aircraft.facade';
 import { MapService } from '../../shared/map/map.service';
@@ -17,7 +18,7 @@ import { MapService } from '../../shared/map/map.service';
 @Component({
   selector: 'app-map-view',
   standalone: true,
-  imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule],
+  imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule, MatSnackBarModule],
   templateUrl: './map-view.component.html',
   styleUrl: './map-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +27,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
   readonly facade = inject(AircraftFacade);
   private readonly mapService = inject(MapService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly snackBar = inject(MatSnackBar);
 
   constructor() {
     // Effect: push GeoJSON to MapLibre whenever data or map readiness changes
@@ -63,6 +65,26 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.facade.stopPolling();
+  }
+
+  closePanel(): void {
+    this.facade.selectAircraft(null);
+  }
+
+  onFilterChange(country: string | null): void {
+    this.facade.setCountryFilter(country);
+    
+    const geojson = this.facade.aircraftGeoJson();
+    const count = this.facade.aircraftCount();
+
+    if (country) {
+      this.snackBar.open(`Filtered by ${country}: ${count} aircraft found`, 'Close', { duration: 3000 });
+      if (geojson.features.length > 0) {
+        this.mapService.fitToFeatures(geojson);
+      }
+    } else {
+      this.snackBar.open('Filter cleared. Showing all aircraft', 'Close', { duration: 3000 });
+    }
   }
 
   formatTimestamp(ts: number): string {

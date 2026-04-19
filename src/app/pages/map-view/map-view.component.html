@@ -21,7 +21,7 @@
       <mat-label>Country</mat-label>
       <mat-select
         [value]="facade.filterCountry()"
-        (selectionChange)="facade.setCountryFilter($event.value)">
+        (selectionChange)="onFilterChange($event.value)">
         <mat-option [value]="null">All countries</mat-option>
         @for (country of facade.availableCountries(); track country) {
           <mat-option [value]="country">{{ country }}</mat-option>
@@ -32,6 +32,7 @@
 
   @if (facade.selectedAircraft(); as aircraft) {
     <div class="aircraft-panel">
+      <button class="close-panel-btn" (click)="closePanel()" aria-label="Close panel">&times;</button>
       <strong>{{ aircraft.callsign }}</strong>
       <span>ICAO: {{ aircraft.icao24 }}</span>
       <span>Country: {{ aircraft.originCountry }}</span>
@@ -41,6 +42,7 @@
     </div>
   } @else if (facade.selectedIcao24()) {
     <div class="aircraft-panel stale">
+      <button class="close-panel-btn" (click)="closePanel()" aria-label="Close panel">&times;</button>
       <strong>{{ facade.selectedIcao24() }}</strong>
       <span>Aircraft no longer tracked</span>
     </div>

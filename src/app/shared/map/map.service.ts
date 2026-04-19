@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, NgZone } from '@angular/core';
-import { Map as MaplibreMap, GeoJSONSource, NavigationControl } from 'maplibre-gl';
+import { Map as MaplibreMap, GeoJSONSource, NavigationControl, LngLatBounds } from 'maplibre-gl';
 import { FeatureCollection, Point } from 'geojson';
 import { Subject, Observable } from 'rxjs';
 import { MAP_CONFIG } from './map.tokens';
@@ -22,10 +22,10 @@ export class MapService {
   private map: MaplibreMap | null = null;
   private sourceReady = false;
 
-  private readonly _aircraftClick$ = new Subject<string>();
+  private readonly _aircraftClick$ = new Subject<string | null>();
 
   readonly isReady = signal(false);
-  readonly aircraftClick$: Observable<string> = this._aircraftClick$.asObservable();
+  readonly aircraftClick$: Observable<string | null> = this._aircraftClick$.asObservable();
 
   initialize(container: HTMLElement): void {
     if (this.map) {
@@ -69,6 +69,19 @@ export class MapService {
         speed: 1.5,
         curve: 1.2,
       });
+    });
+  }
+
+  fitToFeatures(geojson: FeatureCollection<Point>): void {
+    if (!this.map || geojson.features.length === 0) return;
+
+    const bounds = new LngLatBounds();
+    for (const feature of geojson.features) {
+      bounds.extend(feature.geometry.coordinates as [number, number]);
+    }
+
+    this.ngZone.runOutsideAngular(() => {
+      this.map!.fitBounds(bounds, { padding: 50, maxZoom: 8, duration: 1000 });
     });
   }
 
@@ -185,6 +198,17 @@ export class MapService {
       const icao24 = feature?.properties?.['icao24'] as string | undefined;
       if (icao24) {
         this.ngZone.run(() => this._aircraftClick$.next(icao24));
+      }
+    });
+
+    // Click on empty space to clear selection
+    this.map.on('click', (e) => {
+      if (!this.map) return;
+      const features = this.map.queryRenderedFeatures(e.point, {
+        layers: [AIRCRAFT_LAYER_ID, CLUSTERS_LAYER_ID]
+      });
+      if (features.length === 0) {
+        this.ngZone.run(() => this._aircraftClick$.next(null));
       }
     });
 
