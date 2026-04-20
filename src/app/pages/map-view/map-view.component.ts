@@ -16,12 +16,11 @@ import { AircraftFacade } from '../../application/aircraft/aircraft.facade';
 import { MapService } from '../../shared/map/map.service';
 
 @Component({
-  selector: 'app-map-view',
-  standalone: true,
-  imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule, MatSnackBarModule],
-  templateUrl: './map-view.component.html',
-  styleUrl: './map-view.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-map-view',
+    imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule, MatSnackBarModule],
+    templateUrl: './map-view.component.html',
+    styleUrl: './map-view.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapViewComponent implements OnInit, OnDestroy {
   readonly facade = inject(AircraftFacade);
