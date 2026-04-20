@@ -1,3 +1,4 @@
+
 import {
   Component,
   ChangeDetectionStrategy,
@@ -16,11 +17,11 @@ import { AircraftFacade } from '../../application/aircraft/aircraft.facade';
 import { MapService } from '../../shared/map/map.service';
 
 @Component({
-    selector: 'app-map-view',
-    imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule, MatSnackBarModule],
-    templateUrl: './map-view.component.html',
-    styleUrl: './map-view.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-map-view',
+  imports: [MapContainerComponent, MatFormFieldModule, MatSelectModule, MatSnackBarModule],
+  templateUrl: './map-view.component.html',
+  styleUrl: './map-view.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapViewComponent implements OnInit, OnDestroy {
   readonly facade = inject(AircraftFacade);
@@ -29,12 +30,14 @@ export class MapViewComponent implements OnInit, OnDestroy {
   private readonly snackBar = inject(MatSnackBar);
 
   constructor() {
-    // Effect: push GeoJSON to MapLibre whenever data or map readiness changes
+    // Effect: push GeoJSON to MapLibre whenever data or map readiness changes.
+    // Note: setData is called even when features is empty so the map stays in sync
+    // with the store — avoids showing stale aircraft when the API returns no results.
     effect(() => {
       const isReady = this.mapService.isReady();
       const geojson = this.facade.aircraftGeoJson();
 
-      if (!isReady || !geojson.features.length) return;
+      if (!isReady) return;
 
       this.mapService.updateAircraftSource(geojson);
     });
@@ -72,7 +75,7 @@ export class MapViewComponent implements OnInit, OnDestroy {
 
   onFilterChange(country: string | null): void {
     this.facade.setCountryFilter(country);
-    
+
     const geojson = this.facade.aircraftGeoJson();
     const count = this.facade.aircraftCount();
 

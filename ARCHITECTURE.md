@@ -266,6 +266,7 @@ Browser ← response (same origin — no CORS check)
 | Repeated click on same aircraft | `lastCenteredIcao` guard — no duplicate `flyTo()` |
 | Polling update re-triggers flyTo | `selectedIcao24` primitive comparison — no re-center |
 | `initialize()` called twice | `if (this.map) this.destroy()` guard |
+| API returns empty collection | `setData(emptyGeoJson)` still called — map stays in sync with store, no stale markers |
 
 ---
 

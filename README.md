@@ -160,6 +160,7 @@ OpenSky API → Proxy (Bearer token) → Repository → Adapter → Store (signa
 3. **Store** updates normalized state (`Record<icao24, AircraftState>`) using Angular Signals
 4. **GeoJSON** is derived automatically via `computed` selectors — no manual trigger needed
 5. **MapService** updates the map source efficiently using `setData()` — layers are never recreated
+6. **Empty results are applied** — if the API returns an empty collection, `setData()` is still called to keep the map in sync with the store and avoid showing stale aircraft
 
 ---
 
@@ -222,7 +223,7 @@ OpenSky API → Proxy (Bearer token) → Repository → Adapter → Store (signa
 
 ---
 
-## �🧪 Testing
+## 🧪 Testing
 
 ```bash
 # Run all unit tests
