@@ -1,4 +1,4 @@
-# MapXV — Angular 18 Aircraft Tracking Application
+# MapXV — Angular 21 Aircraft Tracking Application
 
 Real-time aircraft position visualization using **MapLibre GL JS** and the **OpenSky Network API**.
 
@@ -8,11 +8,11 @@ Real-time aircraft position visualization using **MapLibre GL JS** and the **Ope
 
 | Technology | Version | Purpose |
 |---|---|---|
-| Angular | 18 | Framework (standalone APIs) |
+| Angular | 21 | Framework (standalone APIs) |
 | MapLibre GL JS | 5.x | Map rendering (WebGL) |
 | RxJS | 7.8 | Async streams (polling, HTTP) |
-| Angular Signals | 18 | Reactive state management |
-| TypeScript | 5.5 | Strict mode |
+| Angular Signals | 21 | Reactive state management |
+| TypeScript | 5.9 | Strict mode |
 | `@types/geojson` | 7946 | GeoJSON typings |
 
 ---

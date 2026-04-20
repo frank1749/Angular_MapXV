@@ -1,8 +1,8 @@
 # ✈️ MapXV — Real-Time Aircraft Tracker
 
-Angular 18 application that visualizes real-time aircraft positions on an interactive map using **MapLibre GL JS** and the **OpenSky Network API**.
+Angular 21 application that visualizes real-time aircraft positions on an interactive map using **MapLibre GL JS** and the **OpenSky Network API**.
 
-![Angular](https://img.shields.io/badge/Angular-18-DD0031?logo=angular)
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular)
 ![MapLibre](https://img.shields.io/badge/MapLibre_GL-5.x-396CB2)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript)
 ![RxJS](https://img.shields.io/badge/RxJS-7.8-B7178C)
@@ -46,8 +46,8 @@ Angular 18 application that visualizes real-time aircraft positions on an intera
 
 ## ⚙️ Prerequisites
 
-- **Node.js** v18+
-- **Angular CLI** v18+
+- **Node.js** v22+
+- **Angular CLI** v21+
 - An **OpenSky Network** account with API credentials ([create one here](https://opensky-network.org/index.php?option=com_users&view=registration))
 
 ---
@@ -254,12 +254,12 @@ Configured with **angular-eslint** + **prettier**.
 
 | Category | Technology |
 |----------|-----------|
-| Framework | Angular 18 (standalone APIs) |
-| Language | TypeScript 5.5 (strict mode) |
+| Framework | Angular 21 (standalone APIs) |
+| Language | TypeScript 5.9 (strict mode) |
 | State | Angular Signals + computed |
 | Async | RxJS 7.8 (polling, HTTP) |
 | Map | MapLibre GL JS 5.x |
-| UI | Angular Material 18 |
+| UI | Angular Material 20 |
 | GeoJSON | `@types/geojson` |
 | Auth | OAuth2 client credentials (proxy-side) |
 | Testing | Karma + Jasmine |
